@@ -1,8 +1,8 @@
 <?php
 
-use AdeildoJr\Runner\Attributes\ShouldQueue;
 use AdeildoJr\Runner\Attributes\RunnerName;
 use AdeildoJr\Runner\Attributes\RunnerQueue;
+use AdeildoJr\Runner\Attributes\ShouldQueue;
 use AdeildoJr\Runner\Attributes\UseTransaction;
 use AdeildoJr\Runner\Runner;
 
