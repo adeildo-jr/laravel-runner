@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create(config('runner.table', 'runners'), function (Blueprint $table) {
             $table->id();
             $table->string('runner_class')->unique();
-            $table->enum('status', RunnerStatus::cases())->default(RunnerStatus::Pending);
+            $table->enum('status', array_column(RunnerStatus::cases(), 'value'))->default(RunnerStatus::Pending->value);
             $table->text('output')->nullable();
             $table->text('error')->nullable();
             $table->timestamp('started_at')->nullable();
