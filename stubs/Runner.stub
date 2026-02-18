@@ -1,0 +1,27 @@
+<?php
+
+namespace {{ namespace }};
+
+use AdeildoJr\Runner\Runner;
+
+class {{ class }} extends Runner
+{
+    protected ?string $name = '{{ runnerName }}';
+
+    protected bool $queue = true;
+
+    protected ?string $queueName = null;
+
+    protected bool $useTransaction = true;
+
+    protected bool $skippable = false;
+
+    public function run(): ?string
+    {
+        return 'Runner completed successfully';
+    }
+
+    public function down(): void
+    {
+    }
+}

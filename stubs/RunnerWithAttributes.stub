@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Runners;
+
+use AdeildoJr\Runner\Attributes\ShouldQueue;
+use AdeildoJr\Runner\Attributes\Skippable;
+use AdeildoJr\Runner\Attributes\RunnerName;
+use AdeildoJr\Runner\Attributes\RunnerQueue;
+use AdeildoJr\Runner\Attributes\UseTransaction;
+use AdeildoJr\Runner\Runner;
+
+#[RunnerName('send-welcome-emails')]
+#[ShouldQueue(true)]
+#[RunnerQueue('emails')]
+#[UseTransaction(true)]
+class SendWelcomeEmails extends Runner
+{
+    public function run(): ?string
+    {
+        return 'Welcome emails sent to all users';
+    }
+
+    public function down(): void
+    {
+    }
+}
