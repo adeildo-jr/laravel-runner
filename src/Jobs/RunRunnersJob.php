@@ -2,6 +2,7 @@
 
 namespace AdeildoJr\Runner\Jobs;
 
+use AdeildoJr\Runner\Enums\RunnerStatus;
 use AdeildoJr\Runner\Events\RunnerFailed;
 use AdeildoJr\Runner\Events\RunnerFinished;
 use AdeildoJr\Runner\Events\RunnerStarted;
@@ -122,21 +123,21 @@ class RunRunnersJob implements ShouldQueue
         $runner = $runnerModel::firstOrCreate([
             'runner_class' => $class,
         ], [
-            'status' => 'pending',
+            'status' => RunnerStatus::Pending,
         ]);
 
         // If retrying failed, only process failed runners
-        if ($this->retryFailed && $runner->status !== 'failed') {
+        if ($this->retryFailed && $runner->status !== RunnerStatus::Failed) {
             return;
         }
 
         // If not retrying and already completed, skip
-        if (! $this->retryFailed && $runner->status === 'completed') {
+        if (! $this->retryFailed && $runner->status === RunnerStatus::Completed) {
             return;
         }
 
         $runner->update([
-            'status' => 'running',
+            'status' => RunnerStatus::Running,
             'started_at' => now(),
             'error' => null,
             'failed_at' => null,
@@ -151,7 +152,7 @@ class RunRunnersJob implements ShouldQueue
             $output = $instance->run();
 
             $runner->update([
-                'status' => 'completed',
+                'status' => RunnerStatus::Completed,
                 'output' => $output,
                 'completed_at' => now(),
                 'failed_at' => null,
@@ -169,7 +170,7 @@ class RunRunnersJob implements ShouldQueue
             }
         } catch (Throwable $e) {
             $runner->update([
-                'status' => 'failed',
+                'status' => RunnerStatus::Failed,
                 'error' => $e->getMessage()."\n".$e->getTraceAsString(),
                 'failed_at' => now(),
             ]);
